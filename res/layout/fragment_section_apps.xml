@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/SeaGreen">
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+    		android:layout_height="match_parent"
+    		android:orientation="vertical">
+        
+	        <Button 
+		        android:id="@+id/addAppBTN"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center"
+		        android:background="@drawable/add"/>
+	        
+	        <TextView 
+	                android:id="@+id/agriAppsTittleTV"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:textSize="20sp"
+	                android:gravity="center"
+	                android:layout_marginTop="1dip"
+	                android:textColor="@color/DimGray"
+	                android:background="@color/Snow"
+	                android:text="@string/agriAppTittle"/>
+	            
+	        <com.alianpaul.contryside.layout.NonScrollableGridView
+	             android:id="@+id/agriAppsGV" 
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:gravity="center"
+	             android:verticalSpacing="1dp"
+	             android:horizontalSpacing="1dp"
+	             android:background="@color/Snow"
+	             android:numColumns="4">
+	             
+	        </com.alianpaul.contryside.layout.NonScrollableGridView>
+	         
+	        <TextView 
+	             android:id="@+id/socialAppsTittleTV"
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:textSize="20sp"
+	             android:layout_marginTop="1dip"
+	             android:gravity="center"
+	             android:textColor="@color/DimGray"
+	             android:background="@color/Snow"
+	             android:text="@string/socialAppTittle"/>
+	         
+	        <com.alianpaul.contryside.layout.NonScrollableGridView
+	             android:id="@+id/socialAppsGV" 
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:gravity="center"
+	             android:verticalSpacing="1dp"
+	             android:horizontalSpacing="1dp"
+	             android:background="@color/Snow"
+	             android:numColumns="4">
+	             
+	         </com.alianpaul.contryside.layout.NonScrollableGridView>
+	         
+	         <TextView 
+	             android:id="@+id/shoppingAppsTittleTV"
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:textSize="20sp"
+	             android:layout_marginTop="1dip"
+	             android:gravity="center"
+	             android:textColor="@color/DimGray"
+	             android:background="@color/Snow"
+	             android:text="@string/shoppingAppTittle"/>
+	         
+	         <com.alianpaul.contryside.layout.NonScrollableGridView
+	             android:id="@+id/shoppingAppsGV" 
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:gravity="center"
+	             android:verticalSpacing="1dp"
+	             android:horizontalSpacing="1dp"
+	             android:background="@color/Snow"
+	             android:numColumns="4">
+	             
+	         </com.alianpaul.contryside.layout.NonScrollableGridView>
+        
+         </LinearLayout>
+    </ScrollView>
+    
+    
+</LinearLayout>

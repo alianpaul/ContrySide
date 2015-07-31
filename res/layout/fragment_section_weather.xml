@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical"
+    android:background="@color/SeaGreen">
+    
+    <TextView
+        android:id="@+id/currentLocationTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Snow"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    
+    <TextView 
+       android:id="@+id/currentTemperatureTV"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:textColor="@color/Snow"
+       android:gravity="center"
+       android:textSize="60sp"/>
+            
+    <TextView 
+       android:id="@+id/currentWeatherTV"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:textColor="@color/Snow"
+       android:gravity="center"
+       android:textSize="20sp"/>
+    
+    <GridView 
+        android:id="@+id/futureWeatherGV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:verticalSpacing="0dp"
+        android:layout_marginTop="25dip"
+        android:numColumns="4">
+        
+    </GridView>
+    
+</LinearLayout>
