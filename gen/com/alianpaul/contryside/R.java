@@ -169,7 +169,8 @@ public final class R {
         public static final int ic_weixin=0x7f02000d;
         public static final int ic_yihaodian=0x7f02000e;
         public static final int ic_zhangnong=0x7f02000f;
-        public static final int usenfc=0x7f020010;
+        public static final int logo=0x7f020010;
+        public static final int usenfc=0x7f020011;
     }
     public static final class id {
         public static final int addAppBTN=0x7f070006;
@@ -185,10 +186,10 @@ public final class R {
         public static final int futureTemperatureTV=0x7f070016;
         public static final int futureWeatherGV=0x7f070013;
         public static final int futureWeatherTV=0x7f070015;
-        public static final int gateway=0x7f07000e;
+        public static final int gateway=0x7f07000f;
         public static final int helloimg=0x7f070018;
         public static final int hintTV=0x7f070000;
-        public static final int networkinfo=0x7f07000f;
+        public static final int networktype=0x7f07000e;
         public static final int pager=0x7f070003;
         public static final int shoppingAppsGV=0x7f07000c;
         public static final int shoppingAppsTittleTV=0x7f07000b;

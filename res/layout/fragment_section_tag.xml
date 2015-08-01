@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:orientation="vertical"
-    android:background="@color/SeaGreen">
+    android:background="@color/LightSeaGreen">
     
     <TextView
         android:id="@+id/tagid" 
@@ -11,7 +11,15 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="tag"/>
+        android:textColor="@color/Snow"/>
+    
+    <TextView 
+        android:id="@+id/networktype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/Snow"/>
     
     <TextView 
         android:id="@+id/gateway"
@@ -19,14 +27,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="gateway"/>
-    
-    <TextView 
-        android:id="@+id/networkinfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:text="networkinfo"/>
+        android:textColor="@color/Snow"/>
 
 </LinearLayout>

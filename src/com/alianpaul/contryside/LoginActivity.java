@@ -1,6 +1,8 @@
 package com.alianpaul.contryside;
 
 
+import java.text.Format;
+
 import com.alianpaul.contryside.R;
 import com.alianpaul.contryside.R.id;
 import com.alianpaul.contryside.R.layout;
@@ -19,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -28,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -52,7 +56,9 @@ public class LoginActivity extends Activity{
 	private NfcAdapter nfcAdapter;
 	private String tagId;
 	private String macAddr;
+	private String gatewayIPAddr;
 	private TextView helloTextView;
+	
 	
 	 
 	private Handler handler = new Handler() {
@@ -78,6 +84,7 @@ public class LoginActivity extends Activity{
 				  public void run(){
 				   // do something
 					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+					intent.putExtra("tagID", tagId);
 					startActivity(intent);
 					finish();
 				 }
@@ -102,26 +109,30 @@ public class LoginActivity extends Activity{
         	nfcNotSupportedDialog.setTitle(R.string.error);
         	nfcNotSupportedDialog.setMessage(getText(R.string.no_nfc_error));
         	nfcNotSupportedDialog.show();
-      
+  
         }
         
         loginPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         
-        macAddr = getMacAddress();
+        
         
 	}
 	
 	
 	@Override
 	protected void onResume() {
+		
 		super.onResume();
 		if (nfcAdapter != null) {
             if (!nfcAdapter.isEnabled()) {
                 showWirelessSettingsDialog(SETTING_ERROR_NFC);
             }
             nfcAdapter.enableForegroundDispatch(this, loginPendingIntent, null, null);
+            getMacAddressAndGateway();
 		}
+		
+		
 		
 	}
 	
@@ -157,7 +168,6 @@ public class LoginActivity extends Activity{
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                     startActivity(intent);
-                    finish();
                 }
             });
         }
@@ -172,12 +182,17 @@ public class LoginActivity extends Activity{
         return;
     }
 	
-	private String getMacAddress() {
-		String macAddr = "";
+	private void getMacAddressAndGateway() {
+		macAddr = "";
 		WifiManager wifiMng = (WifiManager) getSystemService(Context.WIFI_SERVICE);  
 	    WifiInfo wifiInfor = wifiMng.getConnectionInfo();  
 	    macAddr = wifiInfor.getMacAddress().replace(":", "");
-		return macAddr;
+	    DhcpInfo dhcpInfo = wifiMng.getDhcpInfo();
+	    gatewayIPAddr = Formatter.formatIpAddress(dhcpInfo.gateway);
+	    Log.d(TAG,"gateway:"+gatewayIPAddr);
+	    if(gatewayIPAddr.equals("0.0.0.0"))
+	    	showWirelessSettingsDialog(SETTING_ERROR_WIFI);
+	    
 	}
 	
 	private void resolveNFCIntent(Intent intent) {
@@ -197,7 +212,7 @@ public class LoginActivity extends Activity{
 	        tagId = sb.toString().toUpperCase();
 	        Log.d(TAG, tagId);
 	        helloTextView.setText("正在验证您的身份...");
-	        HttpUtil.sendLoginRequest("http://192.168.6.1/cgi-bin/luci/authuid", tagId, macAddr, new LoginRequestCallbackListener() {
+	        HttpUtil.sendLoginRequest("http://"+ gatewayIPAddr +"/cgi-bin/luci/authuid", tagId, macAddr, new LoginRequestCallbackListener() {
 				
 				@Override
 				public void onFinish(String responseText) {

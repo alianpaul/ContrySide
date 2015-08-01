@@ -76,6 +76,7 @@ public class StartActivity extends Activity implements AMapLocalWeatherListener{
 		Intent intent = null;
 		if(aMapLocalWeatherLive!=null && aMapLocalWeatherLive.getAMapException().getErrorCode() == 0){
 			intent = new Intent(StartActivity.this, MainActivity.class);
+			intent.putExtra("tagID", "");
 	    }else{
 	    	intent = new Intent(StartActivity.this, LoginActivity.class);
 	    }

@@ -18,7 +18,11 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +31,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -57,6 +62,7 @@ public class MainActivity extends FragmentActivity implements
 
 	SectionPagerAdapter mSectionPagerAdapter;
 	ViewPager mViewPager;
+	String tagID;
 	
 	
 	@Override
@@ -69,7 +75,6 @@ public class MainActivity extends FragmentActivity implements
 		final ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setStackedBackgroundDrawable(new ColorDrawable(R.color.SeaGreen));
 		
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionPagerAdapter);
@@ -88,6 +93,8 @@ public class MainActivity extends FragmentActivity implements
 						.setTabListener(this));
 		}
 		
+		Intent intent = getIntent();
+		tagID = intent.getStringExtra("tagID");
 	}
 	
 	
@@ -108,7 +115,7 @@ public class MainActivity extends FragmentActivity implements
 		
 	}
 	
-	public static class SectionPagerAdapter extends FragmentPagerAdapter {
+	public class SectionPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -131,8 +138,9 @@ public class MainActivity extends FragmentActivity implements
 				default:
 					//NFC info section;
 					Fragment tfragment = new TagSectionFragment();
+					
 					Bundle args = new Bundle();
-                    args.putInt(TagSectionFragment.ARG_SECTION_NUMBER, i + 1);
+                    args.putString(TagSectionFragment.TAG_ID, tagID);
                     tfragment.setArguments(args);
 					return tfragment;
 			}
@@ -462,7 +470,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	public static class TagSectionFragment extends Fragment {
 		
-		public static final String ARG_SECTION_NUMBER = "1";
+		public static final String TAG_ID = "1";
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater,
@@ -471,6 +479,34 @@ public class MainActivity extends FragmentActivity implements
 			
 			View rootView = inflater.inflate(R.layout.fragment_section_tag, container, false);
 			Bundle args = getArguments();
+			
+			TextView tagIdTV = ((TextView) rootView.findViewById(R.id.tagid));
+			TextView networkTypeTV = (TextView) rootView.findViewById(R.id.networktype);
+			TextView gatewayIPTV = (TextView) rootView.findViewById(R.id.gateway);
+			
+			ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			boolean isConnected = activeNetwork != null &&
+								  activeNetwork.isConnectedOrConnecting();
+			
+			if(isConnected){
+				if(activeNetwork.getType() == ConnectivityManager.TYPE_WIFI){
+					networkTypeTV.setText("连接方式:   WLAN");
+					WifiManager wfm = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+					DhcpInfo d = wfm.getDhcpInfo();
+					gatewayIPTV.setText("网关IP:   "+Formatter.formatIpAddress(d.gateway));
+					
+					if(!args.getString(TAG_ID).isEmpty()){
+						tagIdTV.setText("身份卡ID:  "+ args.getString(TAG_ID));
+					}else{
+						tagIdTV.setText("已连接");
+					}
+				}else{
+					networkTypeTV.setText("连接方式： 数据网络");
+				}
+			}else{
+				tagIdTV.setText("网络连接错误");
+			}
 			return rootView;
 		}
 	}
